@@ -1,11 +1,11 @@
 "use server";
 
-import { createUser } from "@/lib/user";
-import { hashUserPassword } from "@/lib/hash";
+import { createUser, getUserByEmail } from "@/lib/user";
+import { hashUserPassword, verifyPassword } from "@/lib/hash";
 import { redirect } from "next/navigation";
 import { createAuthSession } from "@/lib/auth";
 
-export async function signup(prevState, formData) {
+async function signup(prevState, formData) {
   const email = formData.get("email");
   const password = formData.get("password");
 
@@ -29,3 +29,29 @@ export async function signup(prevState, formData) {
     throw error;
   }
 }
+
+const login = async (prevState, formData) => {
+  const email = formData.get("email");
+  const password = formData.get("password");
+
+  const existingUser = getUserByEmail(email);
+
+  if (!existingUser) return { errors: { email: "This email doesn't exist" } };
+
+  const isValidPassword = verifyPassword(existingUser.password, password);
+
+  if (isValidPassword) return { errors: { password: "Wrong password!" } };
+
+  try {
+    await createAuthSession(existingUser.id);
+    redirect("/training");
+  } catch (error) {
+    throw error;
+  }
+};
+
+//helper server action
+export const auth = async (mode, prevState, formData) => {
+  if (mode === "login") return login(prevState, formData);
+  return signup(prevState, formData);
+};
