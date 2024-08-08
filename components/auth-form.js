@@ -19,7 +19,13 @@ export default function AuthForm() {
         <label htmlFor="password">Password</label>
         <input type="password" name="password" id="password" />
       </p>
-      {state.errors && (<ul id="form-errors">{Object.keys(state.errors).map() }</ul>)}
+      {state.errors && (
+        <ul id="form-errors">
+          {Object.keys(state.errors).map((error) => (
+            <li key={error}>{state.errors[error]}</li>
+          ))}
+        </ul>
+      )}
       <p>
         <button type="submit">Create Account</button>
       </p>
