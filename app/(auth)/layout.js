@@ -1,4 +1,4 @@
-import "./globals.css";
+import "../globals.css";
 
 export const metadata = {
   title: "Next Auth",
@@ -7,14 +7,14 @@ export const metadata = {
 
 export default function AuthRootLayout({ children }) {
   return (
-    <html lang="en">
-      <header>
-        <p>Welcome Back</p>
-        <form action={"/"}>
+    <>
+      <header id="auth-header">
+        <p>Welcome back</p>
+        <form>
           <button>Logout</button>
         </form>
       </header>
-      <body>{children}</body>
-    </html>
+      {children}
+    </>
   );
 }
