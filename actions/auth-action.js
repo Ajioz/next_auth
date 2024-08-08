@@ -3,7 +3,7 @@
 import { createUser, getUserByEmail } from "@/lib/user";
 import { hashUserPassword, verifyPassword } from "@/lib/hash";
 import { redirect } from "next/navigation";
-import { createAuthSession } from "@/lib/auth";
+import { createAuthSession, destroySession } from "@/lib/auth";
 
 async function signup(prevState, formData) {
   const email = formData.get("email");
@@ -49,6 +49,13 @@ const login = async (prevState, formData) => {
     throw error;
   }
 };
+
+
+export const logout = async() => {
+  await destroySession();
+  redirect('/')
+}
+
 
 //helper server action
 export const auth = async (mode, prevState, formData) => {
