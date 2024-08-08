@@ -24,7 +24,7 @@ export async function signup(prevState, formData) {
       return { errors: { email: "This email already exist" } };
     }
     throw error;
-    }
-    
-    redirect('/training')
+  }
+
+  redirect("/training");
 }
